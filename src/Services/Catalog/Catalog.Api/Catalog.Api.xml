@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Catalog.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Catalog.Api.Controllers.CatalogController.GetAll">
+            <summary>
+            Get All products from MongoDB
+            </summary>
+            <returns>List products</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.GetById(System.String)">
+            <summary>
+            Get product by id from MongoDB
+            </summary>
+            <returns>Product found</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.GetByName(System.String)">
+            <summary>
+            Get product by name from MongoDB
+            </summary>
+            <returns>Product found</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.GetByCategory(System.String)">
+            <summary>
+            Get product by category from MongoDB
+            </summary>
+            <returns>Product found</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.CreateProduct(Catalog.Api.Entities.Product)">
+            <summary>
+            Post product to MongoDB
+            </summary>
+            <param name="product">Product to save</param>
+            <returns>Product created on route</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.UpdateProduct(Catalog.Api.Entities.Product)">
+            <summary>
+            Update product to MongoDB
+            </summary>
+            <param name="product">Product to update</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Catalog.Api.Controllers.CatalogController.DeleteProductById(System.String)">
+            <summary>
+            Delete product to MongoDB
+            </summary>
+            <param name="id">Product id to delete</param>
+            <returns>true or false</returns>
+        </member>
+    </members>
+</doc>
