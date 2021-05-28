@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Catalog.Api
+namespace Basket.Api
 {
 	public class Program
 	{
