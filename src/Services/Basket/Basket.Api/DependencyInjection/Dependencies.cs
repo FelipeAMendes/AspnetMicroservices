@@ -1,5 +1,8 @@
-﻿using Basket.Api.Repositories;
+﻿using Basket.Api.GrpcServices;
+using Basket.Api.Repositories;
 using Basket.Api.Repositories.Interfaces;
+using Discount.Grpc.Protos;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
@@ -10,9 +13,20 @@ namespace Basket.Api.DependencyInjection
 {
 	public static class Dependencies
 	{
-		public static void AddBasketApiDependencies(this IServiceCollection services)
+		public static void AddBasketApiDependencies(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddScoped<IBasketRepository, BasketRepository>();
+			services.AddScoped<DiscountGrpcService>();
+			
+			services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt =>
+			{
+				opt.Address = new Uri(configuration.GetValue<string>("GrpcSettings:DiscountUrl"));
+			});
+
+			services.AddStackExchangeRedisCache(opt =>
+			{
+				opt.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
+			});
 		}
 
 		public static void ConfigureSwagger(this IServiceCollection services)

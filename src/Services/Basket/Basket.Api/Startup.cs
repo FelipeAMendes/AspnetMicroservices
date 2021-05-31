@@ -20,12 +20,7 @@ namespace Basket.Api
 		{
 			services.AddControllers();
 			services.ConfigureSwagger();
-
-			services.AddBasketApiDependencies();
-			services.AddStackExchangeRedisCache(options =>
-			{
-				options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
-			});
+			services.AddBasketApiDependencies(Configuration);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
