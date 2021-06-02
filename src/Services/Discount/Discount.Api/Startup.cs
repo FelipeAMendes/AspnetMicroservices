@@ -19,7 +19,7 @@ namespace Discount.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.ConfigureSwagger();
+			services.AddSwagger();
 
 			services.AddDiscountApiDependencies();
 		}

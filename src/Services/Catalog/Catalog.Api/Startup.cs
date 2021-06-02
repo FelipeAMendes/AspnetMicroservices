@@ -1,4 +1,3 @@
-using Catalog.Api.Configs;
 using Catalog.Api.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,9 +19,8 @@ namespace Catalog.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.ConfigureSwagger();
-			services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
-			services.AddCatalogApiDependencies();
+			services.AddSwagger();
+			services.AddCatalogApiDependencies(Configuration);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

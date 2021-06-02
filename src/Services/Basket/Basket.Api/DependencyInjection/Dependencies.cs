@@ -13,7 +13,7 @@ namespace Basket.Api.DependencyInjection
 {
 	public static class Dependencies
 	{
-		public static void AddBasketApiDependencies(this IServiceCollection services, IConfiguration configuration)
+		public static IServiceCollection AddBasketApiDependencies(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddScoped<IBasketRepository, BasketRepository>();
 			services.AddScoped<DiscountGrpcService>();
@@ -27,9 +27,11 @@ namespace Basket.Api.DependencyInjection
 			{
 				opt.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
 			});
+
+			return services;
 		}
 
-		public static void ConfigureSwagger(this IServiceCollection services)
+		public static IServiceCollection AddSwagger(this IServiceCollection services)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -42,6 +44,8 @@ namespace Basket.Api.DependencyInjection
 
 				c.IncludeXmlComments(GetXmlCommentsPath());
 			});
+
+			return services;
 		}
 
 		private static string GetXmlCommentsPath()

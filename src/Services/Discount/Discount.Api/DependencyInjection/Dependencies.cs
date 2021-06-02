@@ -10,12 +10,13 @@ namespace Discount.Api.DependencyInjection
 {
 	public static class Dependencies
 	{
-		public static void AddDiscountApiDependencies(this IServiceCollection services)
+		public static IServiceCollection AddDiscountApiDependencies(this IServiceCollection services)
 		{
-			services.AddScoped<IDiscountRepository, DiscountRepository>();
+			return services
+				.AddScoped<IDiscountRepository, DiscountRepository>();
 		}
 
-		public static void ConfigureSwagger(this IServiceCollection services)
+		public static IServiceCollection AddSwagger(this IServiceCollection services)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -28,6 +29,8 @@ namespace Discount.Api.DependencyInjection
 
 				c.IncludeXmlComments(GetXmlCommentsPath());
 			});
+
+			return services;
 		}
 
 		private static string GetXmlCommentsPath()

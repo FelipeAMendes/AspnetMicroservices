@@ -3,6 +3,7 @@ using Catalog.Api.Data;
 using Catalog.Api.Data.Interfaces;
 using Catalog.Api.Repositories;
 using Catalog.Api.Repositories.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -14,14 +15,16 @@ namespace Catalog.Api.DependencyInjection
 {
 	public static class Dependencies
 	{
-		public static void AddCatalogApiDependencies(this IServiceCollection services)
+		public static IServiceCollection AddCatalogApiDependencies(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddSingleton<IDatabaseSettings>(p => p.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-			services.AddScoped<ICatalogContext, CatalogContext>();
-			services.AddScoped<IProductRepository, ProductRepository>();
+			return services
+				.Configure<DatabaseSettings>(configuration.GetSection(nameof(DatabaseSettings)))
+				.AddSingleton<IDatabaseSettings>(p => p.GetRequiredService<IOptions<DatabaseSettings>>().Value)
+				.AddScoped<ICatalogContext, CatalogContext>()
+				.AddScoped<IProductRepository, ProductRepository>();
 		}
 
-		public static void ConfigureSwagger(this IServiceCollection services)
+		public static IServiceCollection AddSwagger(this IServiceCollection services)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -34,6 +37,8 @@ namespace Catalog.Api.DependencyInjection
 
 				c.IncludeXmlComments(GetXmlCommentsPath());
 			});
+
+			return services;
 		}
 
 		private static string GetXmlCommentsPath()

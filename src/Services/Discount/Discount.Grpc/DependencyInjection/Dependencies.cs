@@ -6,10 +6,11 @@ namespace Discount.Grpc.DependencyInjection
 {
 	public static class Dependencies
 	{
-		public static void AddDiscountGrpcDependencies(this IServiceCollection services)
+		public static IServiceCollection AddDiscountGrpcDependencies(this IServiceCollection services)
 		{
-			services.AddAutoMapper(typeof(Startup));
-			services.AddScoped<IDiscountRepository, DiscountRepository>();
+			return services
+				.AddAutoMapper(typeof(Startup))
+				.AddScoped<IDiscountRepository, DiscountRepository>();
 		}
 	}
 }

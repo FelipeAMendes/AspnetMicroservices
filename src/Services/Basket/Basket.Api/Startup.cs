@@ -19,7 +19,7 @@ namespace Basket.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.ConfigureSwagger();
+			services.AddSwagger();
 			services.AddBasketApiDependencies(Configuration);
 		}
 
