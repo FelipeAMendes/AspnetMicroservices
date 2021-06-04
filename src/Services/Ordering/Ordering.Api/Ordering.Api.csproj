@@ -11,15 +11,15 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+		<PackageReference Include="MassTransit" Version="7.2.0" />
+		<PackageReference Include="MassTransit.AspNetCore" Version="7.2.0" />
+		<PackageReference Include="MassTransit.RabbitMq" Version="7.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj" />
 		<ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />
 		<ProjectReference Include="..\Ordering.Infrasctructure\Ordering.Infrastructure.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="EventBusConsumer\" />
 	</ItemGroup>
 
 	<PropertyGroup>

@@ -18,11 +18,7 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 		private readonly IEmailService _emailService;
 		private readonly ILogger<CheckoutOrderCommandHandler> _logger;
 
-		public CheckoutOrderCommandHandler(
-			IOrderRepository orderRepository,
-			IMapper mapper,
-			IEmailService emailService,
-			ILogger<CheckoutOrderCommandHandler> logger)
+		public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, IEmailService emailService, ILogger<CheckoutOrderCommandHandler> logger)
 		{
 			_orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -33,26 +29,22 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 		public async Task<int> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
 		{
 			var orderEntity = _mapper.Map<Order>(request);
-			var orderCreated = await _orderRepository.AddAsync(orderEntity);
+			var newOrder = await _orderRepository.AddAsync(orderEntity);
 
-			_logger.LogInformation($"Order {orderCreated.Id} is successfully created.");
+			_logger.LogInformation($"Order {newOrder.Id} is successfully created.");
 
-			await SendMail(orderCreated);
-			return orderCreated.Id;
+			await SendMail(newOrder);
+
+			return newOrder.Id;
 		}
 
 		private async Task SendMail(Order order)
 		{
-			var emailData = new Email
-			{
-				To = "mendesfelipe00@gmail.com",
-				Body = $"Order was created.",
-				Subject = "Order was created"
-			};
+			var email = new Email() { To = "ezozkme@gmail.com", Body = $"Order was created.", Subject = "Order was created" };
 
 			try
 			{
-				await _emailService.SendEmail(emailData);
+				await _emailService.SendEmail(email);
 			}
 			catch (Exception ex)
 			{

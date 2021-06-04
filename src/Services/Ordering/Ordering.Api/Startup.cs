@@ -20,10 +20,11 @@ namespace Ordering.Api
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllers();
-			services.AddSwagger();
 			services.AddApplicationDependencies();
 			services.AddInfrastructureDependencies(Configuration);
+			services.AddOrderingApiDependencies(Configuration);
+			services.AddControllers();
+			services.AddSwagger();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

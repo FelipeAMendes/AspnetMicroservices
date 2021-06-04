@@ -1,4 +1,5 @@
 using Basket.Api.DependencyInjection;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,9 +19,10 @@ namespace Basket.Api
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddBasketApiDependencies(Configuration);
+			services.AddMassTransitHostedService();
 			services.AddControllers();
 			services.AddSwagger();
-			services.AddBasketApiDependencies(Configuration);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

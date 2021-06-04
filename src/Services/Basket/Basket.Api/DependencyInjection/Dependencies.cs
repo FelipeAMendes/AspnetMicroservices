@@ -2,6 +2,7 @@
 using Basket.Api.Repositories;
 using Basket.Api.Repositories.Interfaces;
 using Discount.Grpc.Protos;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -15,17 +16,26 @@ namespace Basket.Api.DependencyInjection
 	{
 		public static IServiceCollection AddBasketApiDependencies(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddScoped<IBasketRepository, BasketRepository>();
-			services.AddScoped<DiscountGrpcService>();
-			
-			services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt =>
-			{
-				opt.Address = new Uri(configuration.GetValue<string>("GrpcSettings:DiscountUrl"));
-			});
+			// Redis Configuration
+			services.AddStackExchangeRedisCache(opt
+				=> opt.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString"));
 
-			services.AddStackExchangeRedisCache(opt =>
+			// General Configuration
+			services.AddScoped<IBasketRepository, BasketRepository>();
+			services.AddAutoMapper(typeof(Startup));
+
+			// Grpc Configuration
+			services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt
+				=> opt.Address = new Uri(configuration["GrpcSettings:DiscountUrl"]));
+			services.AddScoped<DiscountGrpcService>();
+
+			// MassTransit-RabbitMQ Configuration
+			services.AddMassTransit(config =>
 			{
-				opt.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
+				config.UsingRabbitMq((ctx, cfg) =>
+				{
+					cfg.Host(configuration["EventBusSettings:HostAddress"]);
+				});
 			});
 
 			return services;
