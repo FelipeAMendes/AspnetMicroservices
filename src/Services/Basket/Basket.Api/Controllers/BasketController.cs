@@ -32,8 +32,6 @@ namespace Basket.Api.Controllers
 			_discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
 		}
 
-		//test reset
-
 		/// <summary>
 		/// Get Basket from User
 		/// </summary>
